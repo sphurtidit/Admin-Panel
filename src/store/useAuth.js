@@ -49,6 +49,8 @@ const useAuth = () => {
     setLogin,
     setLogout,
     setAutoLogin,
+    loading,
+    setLoading,
   } = useAuthStore();
   return {
     user,
@@ -57,6 +59,8 @@ const useAuth = () => {
     setLogin,
     setLogout,
     setAutoLogin,
+    loading,
+    setLoading,
   };
 };
 
