@@ -15,10 +15,8 @@ function AllEvents() {
 
   return (
     <>
-      <div className="m-16">
-        {events ? (
-          <h1 className="text-4xl">No Events Created</h1>
-        ) : (
+      {
+        <div className="m-16">
           <div className="flex flex-wrap gap-4">
             {events.map((elm, inx) => {
               return (
@@ -28,8 +26,8 @@ function AllEvents() {
               );
             })}
           </div>
-        )}
-      </div>
+        </div>
+      }
     </>
   );
 }
