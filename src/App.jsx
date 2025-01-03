@@ -13,6 +13,7 @@ import Login from './pages/Login';
 import Protected from './pages/Protected';
 import { Toaster } from './components/ui/sonner';
 import AutoLogin from './pages/AutoLogin';
+import Event from './pages/Event';
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
               {
                 path: '/all-events',
                 element: <AllEvents />,
+              },
+              {
+                path: 'event/:id',
+                element: <Event />,
               },
               {
                 path: '/all-payments',
