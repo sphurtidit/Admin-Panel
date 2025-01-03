@@ -7,15 +7,21 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { login } from '@/services/api/apiAdmin';
 import useAuth from '@/store/useAuth';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [formData, setFormData] = useState({ username: '', password: '' });
-  const { setLogin } = useAuth();
+  const { setLogin, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, []);
 
   const handelFormData = (event) => {
     const { name, value } = event.target;

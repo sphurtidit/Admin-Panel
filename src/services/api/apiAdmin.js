@@ -56,4 +56,20 @@ const createEvent = async ({ headers, formData }) => {
   }
 };
 
-export { getAllAdmins, createAdmin, login, verify, createEvent };
+const fetchAllEvents = async () => {
+  try {
+    const res = await axios.get('/api/events');
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
+export {
+  getAllAdmins,
+  createAdmin,
+  login,
+  verify,
+  createEvent,
+  fetchAllEvents,
+};

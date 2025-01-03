@@ -5,7 +5,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Loading from './Loading';
 
 function AutoLogin() {
-  const { setAutoLogin } = useAuth();
+  const { setAutoLogin, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(true); // Default to true to show loading initially
@@ -24,6 +24,7 @@ function AutoLogin() {
           });
 
           setAutoLogin(data);
+
           if (location.pathname !== '/login') {
             navigate(location.pathname); // Navigate to current pathname if not login page
           }
