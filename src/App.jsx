@@ -12,7 +12,6 @@ import RegistrationsByEvent from './pages/RegistrationsByEvent';
 import Login from './pages/Login';
 import Protected from './pages/Protected';
 import { Toaster } from './components/ui/sonner';
-import { useEffect } from 'react';
 import AutoLogin from './pages/AutoLogin';
 
 const router = createBrowserRouter([

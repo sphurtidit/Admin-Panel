@@ -3,13 +3,19 @@ import { Button } from '../ui/button';
 import { Trash2 } from 'lucide-react';
 import { Separator } from '../ui/separator';
 import { getAllAdmins } from '@/services/api/apiAdmin';
+import useAuth from '@/store/useAuth';
 
 function UserListComponent() {
   const [users, setUsers] = useState([]);
+  const { userAuthToken } = useAuth();
 
   useEffect(() => {
     const fetchAdmins = async () => {
-      const data = await getAllAdmins();
+      const data = await getAllAdmins({
+        headers: {
+          Authorization: `Bearer ${userAuthToken}`,
+        },
+      });
       setUsers(data);
     };
     fetchAdmins();

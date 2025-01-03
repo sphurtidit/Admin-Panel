@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-const getAllAdmins = async () => {
-  const res = await axios.get('/api/admins');
+const getAllAdmins = async ({ headers }) => {
+  const res = await axios.get('/api/admins', {
+    headers: headers,
+  });
 
   const { data } = res.data;
 
@@ -43,4 +45,15 @@ const verify = async ({ headers }) => {
   return res.data.data;
 };
 
-export { getAllAdmins, createAdmin, login, verify };
+const createEvent = async ({ headers, formData }) => {
+  try {
+    const res = await axios.post('/api/events', formData, {
+      headers: headers,
+    });
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
+export { getAllAdmins, createAdmin, login, verify, createEvent };
