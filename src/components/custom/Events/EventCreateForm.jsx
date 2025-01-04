@@ -8,7 +8,7 @@ import { createEvent } from '@/services/api/apiAdmin';
 import useAuth from '@/store/useAuth';
 import { toast } from 'sonner';
 
-function EventCreateForm() {
+function EventCreateForm({ setEventId }) {
   const { userAuthToken } = useAuth();
   const [coordinater, setCoordinater] = useState([]);
   const [eventName, setEventName] = useState('');
@@ -34,6 +34,8 @@ function EventCreateForm() {
           // 'Content-Type': 'multipart/form-data',
         },
       });
+
+      setEventId(data._id);
 
       toast('Event Created', {
         description: `New Event has been Created`,

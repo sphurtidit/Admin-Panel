@@ -9,8 +9,11 @@ import {
 import React from 'react';
 import EventCreateForm from '@/components/custom/Events/EventCreateForm';
 import EventCategoryForm from '@/components/custom/Events/EventCategoryForm';
+import { useState } from 'react';
 
 function CreateEvent() {
+  const [eventId, setEventId] = useState('');
+
   return (
     <div>
       <div className="m-12">
@@ -22,7 +25,7 @@ function CreateEvent() {
             </CardDescription>
             <CardContent>
               {/* Event Form */}
-              <EventCreateForm />
+              <EventCreateForm setEventId={setEventId} />
               {/* Event Form */}
               <div className="flex gap-3">
                 <Card className="flex-1">
@@ -30,7 +33,7 @@ function CreateEvent() {
                     <CardTitle>Event category (Boys or Girls)</CardTitle>
                     <CardDescription>Create a evet category</CardDescription>
                     {/* Event Category Form */}
-                    <EventCategoryForm />
+                    <EventCategoryForm eventId={eventId} />
                     {/* Event Category Form */}
                   </CardHeader>
                 </Card>
