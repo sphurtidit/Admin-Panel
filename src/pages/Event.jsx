@@ -1,8 +1,22 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import React from 'react';
+import { fetchEventById } from '@/services/api/apiAdmin';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 function Event() {
+  const id = useParams();
+  const [eventDetails, setEventDetails] = useState({});
+
+  const fetchEvent = async () => {
+    const data = await fetchEventById(id);
+    setEventDetails(data);
+  };
+
+  useEffect(() => {
+    fetchEvent();
+  }, []);
+
   return (
     <div className="m-16">
       <h1 className="text-3xl">Event Title</h1>

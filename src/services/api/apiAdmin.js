@@ -65,6 +65,15 @@ const fetchAllEvents = async () => {
   }
 };
 
+const fetchEventById = async ({ id }) => {
+  try {
+    const res = await axios.get(`/api/events/${id}`);
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
 export {
   getAllAdmins,
   createAdmin,
@@ -72,4 +81,5 @@ export {
   verify,
   createEvent,
   fetchAllEvents,
+  fetchEventById,
 };

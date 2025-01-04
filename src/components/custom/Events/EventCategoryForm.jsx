@@ -3,10 +3,15 @@ import EventCaregoryFormFields from './EventCaregoryFormFields';
 import { CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
-function EventCategoryForm() {
+function EventCategoryForm({ eventId }) {
   const handelEventSubmit = (event) => {
     event.preventDefault();
-    console.log('Submitted');
+    const eventCategoryData = {
+      ...category,
+      eventId,
+    };
+
+    console.log(eventCategoryData);
   };
 
   const [category, setCategory] = useState({
@@ -26,6 +31,12 @@ function EventCategoryForm() {
     <form type="submit" onSubmit={handelEventSubmit}>
       <CardContent>
         <div className="flex gap-3 flex-wrap">
+          <EventCaregoryFormFields
+            fieldname={'Event Id'}
+            value={eventId}
+            name="eventId"
+            disabled={true}
+          />
           <EventCaregoryFormFields
             fieldname={'Category Name'}
             value={category.categoryName}
