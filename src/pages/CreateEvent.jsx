@@ -33,7 +33,10 @@ function CreateEvent() {
                     <CardTitle>Event category (Boys or Girls)</CardTitle>
                     <CardDescription>Create a evet category</CardDescription>
                     {/* Event Category Form */}
-                    <EventCategoryForm eventId={eventId} />
+                    <EventCategoryForm
+                      eventId={eventId}
+                      setEventId={setEventId}
+                    />
                     {/* Event Category Form */}
                   </CardHeader>
                 </Card>

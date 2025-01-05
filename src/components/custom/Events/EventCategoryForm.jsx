@@ -2,31 +2,54 @@ import React, { useState } from 'react';
 import EventCaregoryFormFields from './EventCaregoryFormFields';
 import { CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { createCategory } from '@/services/api/apiAdmin';
+import useAuth from '@/store/useAuth';
+import { toast } from 'sonner';
 
-function EventCategoryForm({ eventId }) {
-  const handelEventSubmit = (event) => {
+function EventCategoryForm({ eventId, setEventId }) {
+  const { userAuthToken } = useAuth();
+
+  const handelEventSubmit = async (event) => {
     event.preventDefault();
     const eventCategoryData = {
       ...category,
       eventId,
     };
 
-    console.log(eventCategoryData);
+    const data = await createCategory({
+      headers: {
+        Authorization: `Bearer ${userAuthToken}`,
+      },
+      eventCategoryData,
+    });
+
+    toast('Event Category Created Succefully', {
+      description: `Event category has been created for ${category.categoryName}`,
+    });
+    return;
   };
 
-  const [category, setCategory] = useState({
+  const initialStateForm = {
     categoryName: '',
     registrationFees: '',
     minNumber: '',
     maxNumber: '',
     prizeWinner: '',
     prizeRunnerUp: '',
-  });
+  };
+
+  const handelClearForm = () => {
+    setCategory(initialStateForm);
+    setEventId('');
+  };
+
+  const [category, setCategory] = useState(initialStateForm);
 
   const handelCategory = (event) => {
     const { name, value } = event.target;
     setCategory((prev) => ({ ...prev, [name]: value }));
   };
+
   return (
     <form type="submit" onSubmit={handelEventSubmit}>
       <CardContent>
@@ -75,9 +98,12 @@ function EventCategoryForm({ eventId }) {
           />
         </div>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex justify-between">
         <Button variant="outline" type="submit">
           Submit
+        </Button>
+        <Button variant="outline" type="button" onClick={handelClearForm}>
+          Clear Form
         </Button>
       </CardFooter>
     </form>
