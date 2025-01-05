@@ -35,6 +35,13 @@ function EventCreateForm({ setEventId }) {
         },
       });
 
+      if (data.status == 403) {
+        toast('Authorization Failed', {
+          description: `You are not authorized for this action`,
+        });
+        return;
+      }
+
       setEventId(data._id);
 
       toast('Event Created', {

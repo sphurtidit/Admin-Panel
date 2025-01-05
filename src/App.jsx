@@ -14,6 +14,7 @@ import Protected from './pages/Protected';
 import { Toaster } from './components/ui/sonner';
 import AutoLogin from './pages/AutoLogin';
 import Event from './pages/Event';
+import Schedule from './pages/Schedule';
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
               {
                 path: 'event/:id',
                 element: <Event />,
+              },
+              {
+                path: 'event/:id/:schedule',
+                element: <Schedule />,
               },
               {
                 path: '/all-payments',

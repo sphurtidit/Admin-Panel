@@ -74,6 +74,18 @@ const fetchEventById = async ({ id }) => {
   }
 };
 
+const createCategory = async ({ headers, eventCategoryData }) => {
+  try {
+    const res = await axios.post('/api/eventCategory', eventCategoryData, {
+      headers: headers,
+    });
+
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
 export {
   getAllAdmins,
   createAdmin,
@@ -82,4 +94,5 @@ export {
   createEvent,
   fetchAllEvents,
   fetchEventById,
+  createCategory,
 };

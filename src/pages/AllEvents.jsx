@@ -1,6 +1,7 @@
 import EventCard from '@/components/custom/Events/EventCard';
 import React, { useEffect, useState } from 'react';
 import { fetchAllEvents } from '@/services/api/apiAdmin';
+import { Button } from '@/components/ui/button';
 
 function AllEvents() {
   const [events, setEvents] = useState([]);

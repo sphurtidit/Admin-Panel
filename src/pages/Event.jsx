@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { fetchEventById } from '@/services/api/apiAdmin';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 function Event() {
   const id = useParams();
@@ -42,6 +42,12 @@ function Event() {
             </div>
           </CardContent>
         </Card>
+      </div>
+      <div className="flex justify-between mt-9">
+        <Link to="schedule">
+          <Button>Schedule</Button>
+        </Link>
+        <Button>Delete Event</Button>
       </div>
     </div>
   );
