@@ -86,6 +86,15 @@ const createCategory = async ({ headers, eventCategoryData }) => {
   }
 };
 
+const deleteEvent = async ({ id }) => {
+  try {
+    const res = await axios.delete(`/api/events/${id}`);
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
 export {
   getAllAdmins,
   createAdmin,
@@ -95,4 +104,5 @@ export {
   fetchAllEvents,
   fetchEventById,
   createCategory,
+  deleteEvent,
 };

@@ -18,8 +18,6 @@ function EventCreateForm({ setEventId }) {
 
   const handelEventSubmit = async (event) => {
     event.preventDefault();
-
-    console.log(file);
     formData.append('name', eventName);
     formData.append('rulebook', file);
     coordinater.forEach((coordinator, index) => {

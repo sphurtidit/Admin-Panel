@@ -1,16 +1,27 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { fetchEventById } from '@/services/api/apiAdmin';
+import { fetchEventById, deleteEvent } from '@/services/api/apiAdmin';
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 function Event() {
   const id = useParams();
   const [eventDetails, setEventDetails] = useState({});
+  const navigate = useNavigate();
 
   const fetchEvent = async () => {
     const data = await fetchEventById(id);
     setEventDetails(data);
+  };
+
+  const deleteEventHandler = async () => {
+    try {
+      await deleteEvent(id);
+      navigate('/all-events');
+    } catch (error) {
+      console.log(error);
+    } finally {
+    }
   };
 
   useEffect(() => {
@@ -47,7 +58,7 @@ function Event() {
         <Link to="schedule">
           <Button>Schedule</Button>
         </Link>
-        <Button>Delete Event</Button>
+        <Button onClick={deleteEventHandler}>Delete Event</Button>
       </div>
     </div>
   );
