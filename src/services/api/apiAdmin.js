@@ -130,6 +130,17 @@ const getSchedule = async (id) => {
   }
 };
 
+const deleteSchedule = async ({ id, headers }) => {
+  try {
+    const res = await axios.delete(`${API_BASE_URL}/api/matches/${id}`, {
+      headers: headers,
+    });
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
 export {
   getAllAdmins,
   createAdmin,
@@ -143,4 +154,5 @@ export {
   deleteCategory,
   createSchedule,
   getSchedule,
+  deleteSchedule,
 };

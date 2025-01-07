@@ -8,11 +8,12 @@ import {
 } from '@/components/ui/card';
 import React from 'react';
 import { Link } from 'react-router-dom';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function EventCard({ data }) {
   const handleDownload = async () => {
     const link = document.createElement('a');
-    link.href = `http://localhost:5000/public/${data.rulebook}`;
+    link.href = `${API_BASE_URL}/public${data.rulebook}`;
     link.target = '_blank'; // Opens in a new tab, optional
     link.download = `${data.name} rulebook.pdf`; // Optional: set a filename for downloading
     link.click();
