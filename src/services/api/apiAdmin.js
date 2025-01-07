@@ -2,7 +2,7 @@ import axios from 'axios';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const getAllAdmins = async ({ headers }) => {
-  const res = await axios.get('/api/admins', {
+  const res = await axios.get(`${API_BASE_URL}/api/admins`, {
     headers: headers,
   });
 
@@ -111,7 +111,7 @@ const deleteCategory = async (id) => {
 
 const createSchedule = async ({ data, headers }) => {
   try {
-    const res = await axios.post('${API_BASE_URL}/api/matches', data, {
+    const res = await axios.post(`${API_BASE_URL}/api/matches`, data, {
       headers: headers,
     });
 
