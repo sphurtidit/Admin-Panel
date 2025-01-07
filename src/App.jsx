@@ -56,6 +56,10 @@ const router = createBrowserRouter([
                 element: <Schedule />,
               },
               {
+                path: 'event/:id/schedule/:eventCategoryId',
+                element: <Schedule />,
+              },
+              {
                 path: '/all-payments',
                 element: <AllPayments />,
               },

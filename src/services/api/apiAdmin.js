@@ -95,6 +95,36 @@ const deleteEvent = async ({ id }) => {
   }
 };
 
+const deleteCategory = async (id) => {
+  try {
+    const res = await axios.delete(`/api/eventCategory/${id}`);
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
+const createSchedule = async ({ data, headers }) => {
+  try {
+    const res = await axios.post('/api/matches', data, {
+      headers: headers,
+    });
+
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
+const getSchedule = async (id) => {
+  try {
+    const res = await axios.get(`/api/matches/${id}`);
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
 export {
   getAllAdmins,
   createAdmin,
@@ -105,4 +135,7 @@ export {
   fetchEventById,
   createCategory,
   deleteEvent,
+  deleteCategory,
+  createSchedule,
+  getSchedule,
 };
