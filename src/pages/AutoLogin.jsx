@@ -38,6 +38,10 @@ function AutoLogin() {
       }
     };
 
+    if (isAuthenticated) {
+      return;
+    }
+
     fetchAdmin();
   }, [state?.userAuthToken, setAutoLogin, location.pathname, navigate]);
 
