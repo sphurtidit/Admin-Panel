@@ -1,4 +1,5 @@
 import axios from 'axios';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const getAllAdmins = async ({ headers }) => {
   const res = await axios.get('/api/admins', {
@@ -12,7 +13,7 @@ const getAllAdmins = async ({ headers }) => {
 
 const createAdmin = async ({ username, password, role, headers }) => {
   const res = await axios.post(
-    '/api/admin',
+    `${API_BASE_URL}/api/admin`,
     {
       username,
       password,
@@ -28,7 +29,7 @@ const createAdmin = async ({ username, password, role, headers }) => {
 };
 
 const login = async ({ username, password }) => {
-  const res = await axios.post('/api/login-admin', {
+  const res = await axios.post(`${API_BASE_URL}/api/login-admin`, {
     username,
     password,
   });
@@ -38,7 +39,7 @@ const login = async ({ username, password }) => {
 };
 
 const verify = async ({ headers }) => {
-  const res = await axios.get('/api/verify-admin', {
+  const res = await axios.get(`${API_BASE_URL}/api/verify-admin`, {
     headers: headers,
   });
 
@@ -47,7 +48,7 @@ const verify = async ({ headers }) => {
 
 const createEvent = async ({ headers, formData }) => {
   try {
-    const res = await axios.post('/api/events', formData, {
+    const res = await axios.post(`${API_BASE_URL}/api/events`, formData, {
       headers: headers,
     });
     return res.data;
@@ -58,7 +59,7 @@ const createEvent = async ({ headers, formData }) => {
 
 const fetchAllEvents = async () => {
   try {
-    const res = await axios.get('/api/events');
+    const res = await axios.get(`${API_BASE_URL}/api/events`);
     return res.data;
   } catch (err) {
     return err;
@@ -67,7 +68,7 @@ const fetchAllEvents = async () => {
 
 const fetchEventById = async ({ id }) => {
   try {
-    const res = await axios.get(`/api/events/${id}`);
+    const res = await axios.get(`${API_BASE_URL}/api/events/${id}`);
     return res.data;
   } catch (err) {
     return err;
@@ -76,9 +77,13 @@ const fetchEventById = async ({ id }) => {
 
 const createCategory = async ({ headers, eventCategoryData }) => {
   try {
-    const res = await axios.post('/api/eventCategory', eventCategoryData, {
-      headers: headers,
-    });
+    const res = await axios.post(
+      `${API_BASE_URL}/api/eventCategory`,
+      eventCategoryData,
+      {
+        headers: headers,
+      }
+    );
 
     return res.data;
   } catch (err) {
@@ -88,7 +93,7 @@ const createCategory = async ({ headers, eventCategoryData }) => {
 
 const deleteEvent = async ({ id }) => {
   try {
-    const res = await axios.delete(`/api/events/${id}`);
+    const res = await axios.delete(`${API_BASE_URL}/api/events/${id}`);
     return res.data;
   } catch (err) {
     return err;
@@ -97,7 +102,7 @@ const deleteEvent = async ({ id }) => {
 
 const deleteCategory = async (id) => {
   try {
-    const res = await axios.delete(`/api/eventCategory/${id}`);
+    const res = await axios.delete(`${API_BASE_URL}/api/eventCategory/${id}`);
     return res.data;
   } catch (err) {
     return err;
@@ -106,7 +111,7 @@ const deleteCategory = async (id) => {
 
 const createSchedule = async ({ data, headers }) => {
   try {
-    const res = await axios.post('/api/matches', data, {
+    const res = await axios.post('${API_BASE_URL}/api/matches', data, {
       headers: headers,
     });
 
@@ -118,7 +123,7 @@ const createSchedule = async ({ data, headers }) => {
 
 const getSchedule = async (id) => {
   try {
-    const res = await axios.get(`/api/matches/${id}`);
+    const res = await axios.get(`${API_BASE_URL}/api/matches/${id}`);
     return res.data;
   } catch (err) {
     return err;
