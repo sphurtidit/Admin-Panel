@@ -13,11 +13,13 @@ function EventCreateForm({ setEventId }) {
   const [coordinater, setCoordinater] = useState([]);
   const [eventName, setEventName] = useState('');
   const [file, setFile] = useState(null);
+  const [disabled, setdisabled] = useState(false);
 
   const formData = new FormData();
 
   const handelEventSubmit = async (event) => {
     event.preventDefault();
+    setdisabled(true);
     formData.append('name', eventName);
     formData.append('rulebook', file);
     coordinater.forEach((coordinator, index) => {
@@ -42,6 +44,7 @@ function EventCreateForm({ setEventId }) {
 
       setEventId(data._id);
 
+      setdisabled(false);
       toast('Event Created', {
         description: `New Event has been Created`,
       });
@@ -131,7 +134,9 @@ function EventCreateForm({ setEventId }) {
           </div>
         </div>
         <div>
-          <Button type="submit">Submit</Button>
+          <Button type="submit" disabled={disabled}>
+            Submit
+          </Button>
         </div>
       </div>
     </form>

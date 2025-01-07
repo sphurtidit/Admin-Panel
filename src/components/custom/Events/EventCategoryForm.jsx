@@ -8,20 +8,24 @@ import { toast } from 'sonner';
 
 function EventCategoryForm({ eventId, setEventId }) {
   const { userAuthToken } = useAuth();
+  const [disabled, setDisabled] = useState(false);
 
   const handelEventSubmit = async (event) => {
+    setDisabled(true);
     event.preventDefault();
     const eventCategoryData = {
       ...category,
       eventId,
     };
 
-    const data = await createCategory({
+    await createCategory({
       headers: {
         Authorization: `Bearer ${userAuthToken}`,
       },
       eventCategoryData,
     });
+
+    setDisabled(false);
 
     toast('Event Category Created Succefully', {
       description: `Event category has been created for ${category.categoryName}`,
@@ -99,7 +103,7 @@ function EventCategoryForm({ eventId, setEventId }) {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline" type="submit">
+        <Button variant="outline" type="submit" disabled={disabled}>
           Submit
         </Button>
         <Button variant="outline" type="button" onClick={handelClearForm}>

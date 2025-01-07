@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -12,19 +11,23 @@ import { deleteSchedule, getSchedule } from '@/services/api/apiAdmin';
 import useAuth from '@/store/useAuth';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Loading from './Loading';
 
 function Schedule() {
   const { eventCategoryId } = useParams();
   const [schedules, setSchedules] = useState(null);
   const { userAuthToken } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [disabled, setDisabled] = useState(false);
 
   const fetchSchedule = async () => {
     const data = await getSchedule(eventCategoryId);
     setSchedules(data.data);
-    console.log(data.data);
+    setLoading(false);
   };
 
   const handelDeleteSchedule = async (id) => {
+    setDisabled(true);
     const data = await deleteSchedule({
       id,
       headers: {
@@ -32,13 +35,16 @@ function Schedule() {
       },
     });
     await fetchSchedule();
+    setDisabled(false);
   };
 
   useEffect(() => {
     fetchSchedule();
   }, []);
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <div className="m-16">
       <div>
         <ScheduleDialog fetchSchedule={fetchSchedule} />
@@ -64,7 +70,10 @@ function Schedule() {
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button onClick={() => handelDeleteSchedule(elm._id)}>
+                  <Button
+                    onClick={() => handelDeleteSchedule(elm._id)}
+                    disabled={disabled}
+                  >
                     Delete Schedule
                   </Button>
                 </CardFooter>
