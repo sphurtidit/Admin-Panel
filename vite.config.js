@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000', // Backend server URL
+        target: 'https://sphurti-backend.onrender.com', // Backend server URL
         changeOrigin: true, // Changes the origin of the host header to the target URL
       },
     },
