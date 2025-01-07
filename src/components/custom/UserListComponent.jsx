@@ -4,10 +4,12 @@ import { Trash2 } from 'lucide-react';
 import { Separator } from '../ui/separator';
 import { getAllAdmins } from '@/services/api/apiAdmin';
 import useAuth from '@/store/useAuth';
+import Loading from '@/pages/Loading';
 
 function UserListComponent() {
   const [users, setUsers] = useState([]);
   const { userAuthToken } = useAuth();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAdmins = async () => {
@@ -17,6 +19,7 @@ function UserListComponent() {
         },
       });
       setUsers(data);
+      setLoading(false);
     };
     fetchAdmins();
   }, []);
@@ -28,7 +31,26 @@ function UserListComponent() {
         <p className="font-semibold text-xl">Username</p>
         <p className="font-semibold text-xl">Remove User</p>
       </div>
-      {users.map((user) => {
+      {loading ? (
+        <Loading />
+      ) : (
+        users.map((user) => {
+          return (
+            <div key={user.username}>
+              <div className="flex justify-between items-center">
+                <p>{user.role}</p>
+                <p>{user.username}</p>
+                <Button>
+                  <Trash2 />
+                  Delete
+                </Button>
+              </div>
+              <Separator className="my-4" />
+            </div>
+          );
+        })
+      )}
+      {/* {users.map((user) => {
         return (
           <div key={user.username}>
             <div className="flex justify-between items-center">
@@ -42,7 +64,7 @@ function UserListComponent() {
             <Separator className="my-4" />
           </div>
         );
-      })}
+      })} */}
     </>
   );
 }
