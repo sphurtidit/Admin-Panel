@@ -14,12 +14,14 @@ import {
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Loading from './Loading';
+import useAuth from '@/store/useAuth';
 
 function Event() {
   const id = useParams();
   const [eventDetails, setEventDetails] = useState({});
   const [loading, setLoading] = useState(true);
   const [disabled, setDisabled] = useState(false);
+  const { userAuthToken } = useAuth();
   const navigate = useNavigate();
 
   const fetchEvent = async () => {
@@ -31,7 +33,12 @@ function Event() {
   const deleteEventHandler = async () => {
     setDisabled(true);
     try {
-      await deleteEvent(id);
+      await deleteEvent({
+        id,
+        headers: {
+          Authorization: `Bearer ${userAuthToken}`,
+        },
+      });
       navigate('/all-events');
     } catch (error) {
       console.log(error);
