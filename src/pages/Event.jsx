@@ -50,7 +50,12 @@ function Event() {
   const handelDeleteEventCategory = async (id) => {
     setDisabled(true);
     try {
-      await deleteCategory(id);
+      await deleteCategory({
+        id,
+        headers: {
+          Authorization: `Bearer ${userAuthToken}`,
+        },
+      });
       await fetchEvent();
     } catch (error) {
       console.log(error);

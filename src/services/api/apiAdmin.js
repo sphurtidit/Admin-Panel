@@ -103,9 +103,11 @@ const deleteEvent = async ({ id, headers }) => {
   }
 };
 
-const deleteCategory = async (id) => {
+const deleteCategory = async ({ id, headers }) => {
   try {
-    const res = await axios.delete(`${API_BASE_URL}/api/eventCategory/${id}`);
+    const res = await axios.delete(`${API_BASE_URL}/api/eventCategory/${id}`, {
+      headers: headers,
+    });
     return res.data;
   } catch (err) {
     return err;
