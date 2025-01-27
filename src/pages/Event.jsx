@@ -34,7 +34,7 @@ function Event() {
     setDisabled(true);
     try {
       await deleteEvent({
-        id,
+        id: id.id,
         headers: {
           Authorization: `Bearer ${userAuthToken}`,
         },
