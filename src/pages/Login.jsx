@@ -11,11 +11,13 @@ import React, { useEffect, useState } from 'react';
 import { login } from '@/services/api/apiAdmin';
 import useAuth from '@/store/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 function Login() {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const { setLogin, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -30,12 +32,20 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setDisabled(true);
     try {
       const { data, token } = (await login(formData)).data;
       setLogin({ data, token });
       navigate('/');
     } catch (err) {
-      console.log(err);
+      console.log(err.response.data.status);
+      if (err.response.data.status == 'Fail') {
+        toast('Invaild Credentials', {
+          description: `Username or Password may be invalid`,
+        });
+      }
+    } finally {
+      setDisabled(false);
     }
   };
 
@@ -78,7 +88,9 @@ function Login() {
                     </div>
                   </div>
                   <div className="mt-4">
-                    <Button type="submit">Login</Button>
+                    <Button type="submit" disabled={disabled}>
+                      Login
+                    </Button>
                   </div>
                 </form>
               </CardContent>
