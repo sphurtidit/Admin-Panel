@@ -1,7 +1,6 @@
 import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CircleMinus, CirclePlus } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { createEvent } from '@/services/api/apiAdmin';
@@ -22,16 +21,12 @@ function EventCreateForm({ setEventId }) {
     setdisabled(true);
     formData.append('name', eventName);
     formData.append('rulebook', file);
-    coordinater.forEach((coordinator, index) => {
-      formData.append(`coordinator${index + 1}`, coordinator);
-    });
 
     try {
       const data = await createEvent({
         formData,
         headers: {
           Authorization: `Bearer ${userAuthToken}`,
-          // 'Content-Type': 'multipart/form-data',
         },
       });
 
@@ -52,16 +47,9 @@ function EventCreateForm({ setEventId }) {
       console.log(err);
     } finally {
       setEventName('');
-      setCoordinater([]);
       setFile(null);
       document.getElementById('fileInput').value = '';
     }
-  };
-
-  const handelCoordinater = (inx, value) => {
-    const updatedFields = [...coordinater];
-    updatedFields[inx] = value;
-    setCoordinater(updatedFields);
   };
 
   const handelFile = (e) => {
@@ -89,49 +77,6 @@ function EventCreateForm({ setEventId }) {
             onChange={handelFile}
             accept="application/pdf"
           />
-        </div>
-        <div>
-          <h3 className="mb-2">Add Co-ordinator</h3>
-          <Button
-            variant="outline"
-            onClick={() => {
-              setCoordinater((pre) => [...pre, '']);
-            }}
-            type="button"
-          >
-            <CirclePlus />
-            <span>Add</span>
-          </Button>
-          <div>
-            {coordinater.map((elm, inx) => {
-              return (
-                <div className="mt-2" key={inx}>
-                  <span className="mb-2">Coordinator {inx + 1}</span>
-                  <div className="flex gap-3 items-center justify-start">
-                    <Input
-                      className="flex-1"
-                      onChange={(e) => {
-                        handelCoordinater(inx, e.target.value);
-                      }}
-                    />
-                    <div className="flex-1">
-                      <CircleMinus
-                        className="cursor-pointer"
-                        onClick={() => {
-                          console.log(inx);
-                          const updatedFields = coordinater.filter(
-                            (_, i) => i !== inx
-                          );
-                          console.log(inx);
-                          setCoordinater(updatedFields);
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
         </div>
         <div>
           <Button type="submit" disabled={disabled}>
