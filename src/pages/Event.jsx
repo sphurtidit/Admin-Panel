@@ -11,10 +11,13 @@ import {
   deleteEvent,
   deleteCategory,
 } from '@/services/api/apiAdmin';
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Loading from './Loading';
 import useAuth from '@/store/useAuth';
+import EventUpdateDialog from '@/components/custom/Events/EventUpdateDialog';
+import EventCategoryUpdateDialog from '@/components/custom/Events/EventCategoryUpdateDialog';
 
 function Event() {
   const id = useParams();
@@ -74,15 +77,7 @@ function Event() {
         <Loading />
       ) : (
         <>
-          <h1 className="text-4xl uppercase">{eventDetails.name}</h1>
-          <div className="my-6 flex flex-col gap-2">
-            <p className="text-lg">
-              Coordinator 1 - {eventDetails.coordinator1}
-            </p>
-            <p className="text-lg">
-              Coordinator2 - {eventDetails.coordinator2}
-            </p>
-          </div>
+          <h1 className="text-4xl uppercase mb-6">{eventDetails.name}</h1>
           <div>
             <Button variant="outline">Rulebook</Button>
           </div>
@@ -96,32 +91,84 @@ function Event() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex flex-col gap-4">
-                      <h3>Registration Fees - {elm.registrationFees}</h3>
-                      <span>Minimum Number of Members - {elm.minNumber}</span>
-                      <span>Maximum Number of Members - {elm.maxNumber}</span>
-                      <span>Prize Winner - {elm.prizeWinner}</span>
-                      <span>Prize RunnerUp - {elm.prizeRunnerUp}</span>
-                    </div>
+                    <Table>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            Registration Fees
+                          </TableCell>
+                          <TableCell className="text-right">
+                            {elm.registrationFees}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            Prize Winner
+                          </TableCell>
+                          <TableCell className="text-right">
+                            {elm.prizeWinner}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            Prize RunnerUp
+                          </TableCell>
+                          <TableCell className="text-right">
+                            {elm.prizeRunnerUp}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            Minimum Number
+                          </TableCell>
+                          <TableCell className="text-right">
+                            {elm.minNumber}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            Maximum Number
+                          </TableCell>
+                          <TableCell className="text-right">
+                            {elm.maxNumber}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            Prize Visible
+                          </TableCell>
+                          <TableCell className="text-right">
+                            {elm.isPrizeVisible ? (
+                              <span className="text-green-300">True</span>
+                            ) : (
+                              <span className="text-red-300">False</span>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
                   </CardContent>
                   <CardFooter className="flex justify-between mt-9">
                     <Link to={`schedule/${elm._id}`}>
                       <Button>Schedule</Button>
                     </Link>
-                    <Button
-                      onClick={() => {
-                        handelDeleteEventCategory(elm._id);
-                      }}
-                      disabled={disabled}
-                    >
-                      Delete Category
-                    </Button>
+                    <div className="flex gap-5">
+                      <Button
+                        onClick={() => {
+                          handelDeleteEventCategory(elm._id);
+                        }}
+                        disabled={disabled}
+                      >
+                        Delete Category
+                      </Button>
+                      <EventCategoryUpdateDialog data={elm} />
+                    </div>
                   </CardFooter>
                 </Card>
               );
             })}
           </div>
-          <div className="mt-6">
+          <div className="mt-6 flex gap-5">
             <Button
               variant="outline"
               onClick={deleteEventHandler}
@@ -129,6 +176,7 @@ function Event() {
             >
               Delete Event
             </Button>
+            <EventUpdateDialog />
           </div>
         </>
       )}

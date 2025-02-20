@@ -146,6 +146,17 @@ const deleteSchedule = async ({ id, headers }) => {
   }
 };
 
+const getAllRegistrations = async ({ headers }) => {
+  try {
+    const res = await axios.get(`${API_BASE_URL}/api//registration`, {
+      headers: headers,
+    });
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
 export {
   getAllAdmins,
   createAdmin,
@@ -160,4 +171,5 @@ export {
   createSchedule,
   getSchedule,
   deleteSchedule,
+  getAllRegistrations,
 };
