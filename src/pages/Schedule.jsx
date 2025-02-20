@@ -12,6 +12,24 @@ import useAuth from '@/store/useAuth';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Loading from './Loading';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableRow,
+} from '@/components/ui/table';
+
+const invoices = [
+  {
+    invoice: 'Order',
+    totalAmount: '1',
+  },
+  {
+    invoice: 'Start Time',
+    totalAmount: '1',
+  },
+];
 
 function Schedule() {
   const { eventCategoryId } = useParams();
@@ -23,6 +41,8 @@ function Schedule() {
   const fetchSchedule = async () => {
     const data = await getSchedule(eventCategoryId);
     setSchedules(data.data);
+    console.log(data.data);
+
     setLoading(false);
   };
 
@@ -58,16 +78,61 @@ function Schedule() {
                   <CardTitle>Schedule {inx + 1}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex flex-col gap-3">
-                    <span>Order - {elm.order}</span>
-                    <span>TeamA - {elm.teamA}</span>
-                    <span>TeamB - {elm.teamB}</span>
-                    <span>Start Time - {elm.startTime}</span>
-                    <span>Match Completed - {`${elm.isMatchComplete}`}</span>
-                    <span>Score - {elm.score}</span>
-                    <span>Winner - {elm.winner}</span>
-                    <span>Match Name - {elm.matchName}</span>
-                  </div>
+                  {/* Table Start */}
+                  <Table>
+                    <TableCaption>
+                      The Winner of this match is {elm.winner}
+                    </TableCaption>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell className="font-medium">Order</TableCell>
+                        <TableCell className="text-right">
+                          {elm.order}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="font-medium">
+                          Match Name
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {elm.matchName}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="font-medium">Score</TableCell>
+                        <TableCell className="text-right">
+                          {elm.score}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="font-medium">
+                          Start Time
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {elm.startTime}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="font-medium">Team A</TableCell>
+                        <TableCell className="text-right">
+                          {elm.teamA}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="font-medium">Team B</TableCell>
+                        <TableCell className="text-right">
+                          {elm.teamB}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="font-medium">winner</TableCell>
+                        <TableCell className="text-right">
+                          {elm.winner}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                  {/* Table End */}
                 </CardContent>
                 <CardFooter>
                   <Button
