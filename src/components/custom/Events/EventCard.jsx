@@ -24,10 +24,6 @@ function EventCard({ data }) {
       <CardHeader>
         <CardTitle>{data.name}</CardTitle>
       </CardHeader>
-      <CardContent>
-        <h2>Coordinator 1 : {data.coordinator1}</h2>
-        <h2>Coordinator 2 : {data.coordinator2}</h2>
-      </CardContent>
       <CardFooter className="flex justify-between">
         <Button variant={'outline'} onClick={handleDownload}>
           Rulebook
