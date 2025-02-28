@@ -157,6 +157,17 @@ const getAllRegistrations = async ({ headers }) => {
   }
 };
 
+const getAllPayments = async ({headers}) => {
+  try {
+    const res = await axios.get(`${API_BASE_URL}/api/payments`, {
+      headers: headers,
+    });
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+}
+
 export {
   getAllAdmins,
   createAdmin,
@@ -172,4 +183,5 @@ export {
   getSchedule,
   deleteSchedule,
   getAllRegistrations,
+  getAllPayments
 };
