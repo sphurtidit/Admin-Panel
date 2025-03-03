@@ -1,27 +1,7 @@
 import React, { useState } from 'react';
 
-const PaymentsTable = () => {
-  // Sample data
-  const [data, setData] = useState([
-    {
-      orderId: 1,
-      paymentId: 'P1001',
-      userId: 'U123',
-      registrationIds: 'R001',
-    },
-    {
-      orderId: 2,
-      paymentId: 'P1002',
-      userId: 'U124',
-      registrationIds: 'R003',
-    },
-    {
-      orderId: 3,
-      paymentId: 'P1003',
-      userId: 'U125',
-      registrationIds: 'R005',
-    },
-  ]);
+const PaymentsTable = ({data}) => {
+  console.log(data)
 
   return (
     <div className="flex justify-center mt-7 w-full">
@@ -39,8 +19,9 @@ const PaymentsTable = () => {
             <tr key={index} className="flex w-full justify-between mb-4">
               <td className="text-center flex-1">{row.orderId}</td>
               <td className="text-center flex-1">{row.paymentId}</td>
-              <td className="text-center flex-1">{row.userId}</td>
-              <td className="text-center flex-1">{row.registrationIds}</td>
+              <td className="text-center flex-1">{row.userId.email}</td>
+              <td className="text-center flex-1">{row.amount}</td>
+              <td className="text-center flex-1">{row.regId}</td>
             </tr>
           ))}
         </tbody>
