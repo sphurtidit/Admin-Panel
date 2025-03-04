@@ -81,7 +81,7 @@ function AllRegistrations() {
                         </TableCell>
                       </TableRow>
                       <TableRow>
-                        <TableCell className="font-medium">Amount</TableCell>
+                        <TableCell className="font-medium">Registration Amount</TableCell>
                         <TableCell className="text-right">
                           {elm.amount}
                         </TableCell>
@@ -106,6 +106,32 @@ function AllRegistrations() {
                           {elm.nameSO}
                         </TableCell>
                       </TableRow>
+                      <TableRow>
+                        <TableCell className="font-medium">Accomodation</TableCell>
+                        <TableCell className="text-right">
+                        {elm.accomodation? (
+                            <span className="text-green-300">True</span>
+                          ) : (
+                            <span className="text-red-300">False</span>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="font-medium">Acc Amount</TableCell>
+                        <TableCell className="text-right">
+                          {(elm.member.length+elm.faculty.length)*1300}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="font-medium">Accomodation Payment</TableCell>
+                        <TableCell className="text-right">
+                        {elm.payAccommodation ? (
+                            <span className="text-green-300">True</span>
+                          ) : (
+                            <span className="text-red-300">False</span>
+                          )}
+                        </TableCell>
+                      </TableRow>
                     </TableBody>
                   </Table>
                   {/* Table End */}
@@ -113,12 +139,12 @@ function AllRegistrations() {
                 <CardFooter>
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button variant="default">Members</Button>
+                      <Button variant="default" className="mr-4">Members</Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[550px]">
                       <DialogHeader>
                         <DialogTitle>
-                          Members List of {elm?.teamName}
+                          Member List of {elm?.teamName}
                         </DialogTitle>
                         <DialogDescription>
                           <div className="mt-3 grid grid-cols-2">
@@ -129,6 +155,32 @@ function AllRegistrations() {
                                     <span>Name - {elmt.memberName}</span>
                                     <span>College ID - {elmt.clgid}</span>
                                     <span>Goverment ID - {elmt.govId}</span>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="default" className="mr-4">Faculty</Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[550px]">
+                      <DialogHeader>
+                        <DialogTitle>
+                          Faculty List of {elm?.teamName}
+                        </DialogTitle>
+                        <DialogDescription>
+                          <div className="mt-3 grid grid-cols-2">
+                            {elm.faculty?.map((elmt, inx) => {
+                              return (
+                                <div key={inx * 10}>
+                                  <div className="m-4 flex gap-1 flex-col">
+                                    <span>Name - {elm.faculty[inx]?.facultyName}</span>
+                                    <span>Goverment ID - {elm.faculty[inx]?.facultyAadhar}</span>
                                   </div>
                                 </div>
                               );
