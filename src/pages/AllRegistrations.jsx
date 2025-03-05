@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/dialog';
 import React, { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
+import { Delete, Trash } from 'lucide-react';
 
 function AllRegistrations() {
   const userAuthToken = useAuth();
@@ -32,11 +33,14 @@ function AllRegistrations() {
     });
     setRegistration(data);
   };
-  console.log(registration);
 
   useEffect(() => {
     fetchRegistration();
   }, []);
+
+  const deleteRegistration = (_id) => {
+    console.log(_id);
+  };
 
   if (!registration) return <div>Lodaing...</div>;
 
@@ -110,18 +114,18 @@ function AllRegistrations() {
                   </Table>
                   {/* Table End */}
                 </CardContent>
-                <CardFooter>
+                <CardFooter className="justify-between">
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button variant="default">Members</Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[550px]">
+                    <DialogContent className="sm:max-w-[1250px]">
                       <DialogHeader>
                         <DialogTitle>
                           Members List of {elm?.teamName}
                         </DialogTitle>
                         <DialogDescription>
-                          <div className="mt-3 grid grid-cols-2">
+                          <div className="mt-3 grid grid-cols-5">
                             {elm.member?.map((elmt, inx) => {
                               return (
                                 <div key={inx * 10}>
@@ -138,6 +142,15 @@ function AllRegistrations() {
                       </DialogHeader>
                     </DialogContent>
                   </Dialog>
+                  <Button
+                    variant="default"
+                    className="flex items-center"
+                    onClick={() => deleteRegistration(elm._id)}
+                    disabled={true}
+                  >
+                    <Trash />
+                    Delete
+                  </Button>
                 </CardFooter>
               </Card>
             );

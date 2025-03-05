@@ -148,7 +148,7 @@ const deleteSchedule = async ({ id, headers }) => {
 
 const getAllRegistrations = async ({ headers }) => {
   try {
-    const res = await axios.get(`${API_BASE_URL}/api//registration`, {
+    const res = await axios.get(`${API_BASE_URL}/api/registration`, {
       headers: headers,
     });
     return res.data;
@@ -157,7 +157,18 @@ const getAllRegistrations = async ({ headers }) => {
   }
 };
 
-const getAllPayments = async ({headers}) => {
+const updateCategory = async ({ headers }) => {
+  try {
+    const res = await axios.put(`${API_BASE_URL}/api/eventCategory`, {
+      headers: headers,
+    });
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
+const getAllPayments = async ({ headers }) => {
   try {
     const res = await axios.get(`${API_BASE_URL}/api/payments`, {
       headers: headers,
@@ -166,7 +177,7 @@ const getAllPayments = async ({headers}) => {
   } catch (err) {
     return err;
   }
-}
+};
 
 export {
   getAllAdmins,
@@ -183,5 +194,5 @@ export {
   getSchedule,
   deleteSchedule,
   getAllRegistrations,
-  getAllPayments
+  getAllPayments,
 };
