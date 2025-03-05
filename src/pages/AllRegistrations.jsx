@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { saveAs } from 'file-saver';
 import { unparse } from 'papaparse';
+import { Delete, Trash } from 'lucide-react';
 
 function AllRegistrations() {
   const userAuthToken = useAuth();
@@ -21,7 +22,6 @@ function AllRegistrations() {
     });
     setRegistration(data);
   };
-  console.log(registration);
 
   useEffect(() => {
     fetchRegistration();
@@ -57,6 +57,11 @@ function AllRegistrations() {
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     saveAs(blob, 'Registrations.csv');
   };
+  const deleteRegistration = (_id) => {
+    console.log(_id);
+  };
+
+  if (!registration) return <div>Lodaing...</div>;
 
   return (
     <>
