@@ -6,14 +6,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import * as FileSaver from "file-saver";
+import { unparse } from "papaparse";
 
 const PaymentsTable = ({ data }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedDetails, setSelectedDetails] = useState(null);
 
   const handleDetailsClick = (row) => {
-    // Set the selected row's details and open the dialog
-    console.log(row);
     setSelectedDetails(row);
     setIsDialogOpen(true);
   };
@@ -23,13 +23,51 @@ const PaymentsTable = ({ data }) => {
     setSelectedDetails(null);
   };
 
+  // Function to Export CSV
+  const exportToCSV = () => {
+    if (!data || data.length === 0) return;
+
+    // Convert data into structured format for CSV
+    const csvData = data.flatMap((row) =>
+      row.details.map((detail) => ({
+        "College Name": row.userId.college_name,
+        "Event Name": detail.eventName,
+        "Event Category": detail.categoryName,
+        "Order ID": row.orderId,
+        "Payment ID": row.paymentId,
+        "User Email": row.userId.email,
+        "Amount": detail.amount,
+        "Type": detail.type,
+        "Registration ID": detail.regId,
+      }))
+    );
+
+    // Convert JSON to CSV using papaparse
+    const csv = unparse(csvData);
+
+    // Convert CSV string to a Blob
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+
+    // Save file using FileSaver
+    FileSaver.saveAs(blob, "PaymentsData.csv");
+  };
+
   return (
     <div className="overflow-x-auto mt-7 w-full">
+      {/* Export CSV Button */}
+      <button
+        onClick={exportToCSV}
+        className="bg-green-500 text-white py-2 px-4 rounded-lg mb-4"
+      >
+        Export to CSV
+      </button>
+
       <table className="min-w-full bg-black text-white shadow-md rounded-lg overflow-hidden">
         <thead className="bg-black border-b border-white">
           <tr>
             <th className="py-3 px-4 text-left text-sm font-semibold">Order ID</th>
             <th className="py-3 px-4 text-left text-sm font-semibold">Payment ID</th>
+            <th className="py-3 px-4 text-left text-sm font-semibold">College Name</th>
             <th className="py-3 px-4 text-left text-sm font-semibold">User ID</th>
             <th className="py-3 px-4 text-left text-sm font-semibold">Amount</th>
             <th className="py-3 px-4 text-left text-sm font-semibold">Details</th>
@@ -45,6 +83,7 @@ const PaymentsTable = ({ data }) => {
             >
               <td className="py-3 px-4 text-sm">{row.orderId}</td>
               <td className="py-3 px-4 text-sm">{row.paymentId}</td>
+              <td className="py-3 px-4 text-sm">{row.userId.college_name}</td>
               <td className="py-3 px-4 text-sm">{row.userId.email}</td>
               <td className="py-3 px-4 text-sm">{row.amount}</td>
               <td className="py-3 px-4 text-sm">
@@ -68,22 +107,14 @@ const PaymentsTable = ({ data }) => {
             <DialogTitle className="text-xl font-semibold">Payment Details</DialogTitle>
             <DialogDescription className="mt-4">
               <div className="mt-3">
-                {/* Properly render details */}
                 {selectedDetails.details?.map((elmt, inx) => (
-                  <div key={inx} className="grid grid-cols-2 gap-4">
+                  <div key={inx} className="grid grid-cols-2 gap-4 p-4 border border-white rounded-lg">
                     <div>
-                      <p>
-                        <strong>Amount:</strong> {elmt.amount}
-                      </p>
-                      <p>
-                        <strong>Event Name:</strong> {elmt.eventName}
-                      </p>
-                      <p>
-                        <strong>Type:</strong> {elmt.type}
-                      </p>
-                      <p>
-                        <strong>Registration ID:</strong> {elmt.regId}
-                      </p>
+                      <p><strong>Amount:</strong> {elmt.amount}</p>
+                      <p><strong>Event Name:</strong> {elmt.eventName}</p>
+                      <p><strong>Event Category:</strong> {elmt.categoryName}</p>
+                      <p><strong>Type:</strong> {elmt.type}</p>
+                      <p><strong>Registration ID:</strong> {elmt.regId}</p>
                     </div>
                   </div>
                 ))}
