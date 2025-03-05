@@ -168,14 +168,14 @@ const updateCategory = async ({ headers }) => {
   }
 };
 
-const deleteRegistration = async ({ headers }) => {
+const getAllPayments = async ({ headers }) => {
   try {
-    // const res = await axios.put(`${API_BASE_URL}/api/eventCategory`, {
-    //   headers: headers,
-    // });
-    // return res.data;
+    const res = await axios.get(`${API_BASE_URL}/api/payments`, {
+      headers: headers,
+    });
+    return res.data;
   } catch (err) {
-    // return err;
+    return err;
   }
 };
 
@@ -194,5 +194,5 @@ export {
   getSchedule,
   deleteSchedule,
   getAllRegistrations,
-  updateCategory,
+  getAllPayments,
 };
