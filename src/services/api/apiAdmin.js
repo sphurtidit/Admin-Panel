@@ -148,12 +148,34 @@ const deleteSchedule = async ({ id, headers }) => {
 
 const getAllRegistrations = async ({ headers }) => {
   try {
-    const res = await axios.get(`${API_BASE_URL}/api//registration`, {
+    const res = await axios.get(`${API_BASE_URL}/api/registration`, {
       headers: headers,
     });
     return res.data;
   } catch (err) {
     return err;
+  }
+};
+
+const updateCategory = async ({ headers }) => {
+  try {
+    const res = await axios.put(`${API_BASE_URL}/api/eventCategory`, {
+      headers: headers,
+    });
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
+const deleteRegistration = async ({ headers }) => {
+  try {
+    // const res = await axios.put(`${API_BASE_URL}/api/eventCategory`, {
+    //   headers: headers,
+    // });
+    // return res.data;
+  } catch (err) {
+    // return err;
   }
 };
 
@@ -172,4 +194,5 @@ export {
   getSchedule,
   deleteSchedule,
   getAllRegistrations,
+  updateCategory,
 };
