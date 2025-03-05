@@ -1,5 +1,5 @@
 import './App.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createHashRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/Home';
 import { Layout } from './components/custom/Layout';
 import Users from './pages/Users';
@@ -16,7 +16,7 @@ import AutoLogin from './pages/AutoLogin';
 import Event from './pages/Event';
 import Schedule from './pages/Schedule';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     element: <AutoLogin />,
     children: [
