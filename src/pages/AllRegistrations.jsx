@@ -34,7 +34,6 @@ function AllRegistrations() {
     });
     setRegistration(data);
   };
-  console.log(registration);
 
   useEffect(() => {
     fetchRegistration();

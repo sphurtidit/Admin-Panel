@@ -14,14 +14,35 @@ import { Button } from '@/components/ui/button';
 
 function EventCategoryUpdateDialog({ data }) {
   const [isOpen, setIsOpen] = useState(false);
-  const handelFormSubmit = () => {};
+  const [categoryData, setCategoryData] = useState({
+    registrationFees: data.registrationFees,
+    minNumber: data.minNumber,
+    maxNumber: data.maxNumber,
+    prizeWinner: data.prizeWinner,
+    prizeRunnerUp: data.prizeRunnerUp,
+    isPrizeVisible: data.isPrizeVisible ? 'True' : 'False',
+  });
+
+  const handelCategoryData = (e) => {
+    setCategoryData((prev) => ({
+      ...prev,
+      [e.target.id]: e.target.value,
+    }));
+  };
+
+  console.log(data._id);
+
+  const handelFormSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">Edit Event Category</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        <form onSubmit={handelFormSubmit}>
+        <form onSubmit={(e) => handelFormSubmit(e)}>
           <DialogHeader>
             <DialogTitle>Edit Event Category</DialogTitle>
             <DialogDescription>
@@ -36,8 +57,9 @@ function EventCategoryUpdateDialog({ data }) {
               </Label>
               <Input
                 id="registrationFees"
-                placeholder={data.registrationFees}
                 className="col-span-3"
+                value={categoryData.registrationFees}
+                onChange={(e) => handelCategoryData(e)}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -48,6 +70,8 @@ function EventCategoryUpdateDialog({ data }) {
                 id="minNumber"
                 placeholder={data.minNumber}
                 className="col-span-3"
+                value={categoryData.minNumber}
+                onChange={(e) => handelCategoryData(e)}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -58,6 +82,8 @@ function EventCategoryUpdateDialog({ data }) {
                 id="maxNumber"
                 placeholder={data.maxNumber}
                 className="col-span-3"
+                value={categoryData.maxNumber}
+                onChange={(e) => handelCategoryData(e)}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -68,6 +94,8 @@ function EventCategoryUpdateDialog({ data }) {
                 id="prizeWinner"
                 placeholder={data.prizeWinner}
                 className="col-span-3"
+                value={categoryData.prizeWinner}
+                onChange={(e) => handelCategoryData(e)}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -78,6 +106,8 @@ function EventCategoryUpdateDialog({ data }) {
                 id="prizeRunnerUp"
                 placeholder={data.prizeRunnerUp}
                 className="col-span-3"
+                value={categoryData.prizeRunnerUp}
+                onChange={(e) => handelCategoryData(e)}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -86,8 +116,9 @@ function EventCategoryUpdateDialog({ data }) {
               </Label>
               <Input
                 id="isPrizeVisible"
-                placeholder={data.isPrizeVisible}
                 className="col-span-3"
+                onChange={(e) => handelCategoryData(e)}
+                value={categoryData.isPrizeVisible}
               />
             </div>
           </div>
