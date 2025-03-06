@@ -191,7 +191,7 @@ function PaymentMenu() {
               <Link to="/all-payments">
                 <SidebarMenuSubButton asChild>
                   <div className="cursor-pointer">
-                    <span>All Payemts</span>
+                    <span>All Payments</span>
                   </div>
                 </SidebarMenuSubButton>
               </Link>
