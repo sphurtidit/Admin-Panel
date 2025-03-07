@@ -179,6 +179,20 @@ const getAllPayments = async ({ headers }) => {
   }
 };
 
+const getRegistrationsByCategory = async ({id }) => {
+  try {
+    const res = await axios.get(`${API_BASE_URL}/api/getCategoryById/${id}`, {
+      headers: {
+        Authorization: `Bearer ${state.userAuthToken}`,
+      },
+    });
+    console.log(res);
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
 export {
   getAllAdmins,
   createAdmin,
@@ -195,4 +209,5 @@ export {
   deleteSchedule,
   getAllRegistrations,
   getAllPayments,
+  getRegistrationsByCategory
 };
