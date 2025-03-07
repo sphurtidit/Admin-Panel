@@ -179,17 +179,16 @@ const getAllPayments = async ({ headers }) => {
   }
 };
 
-const getRegistrationsByCategory = async ({id }) => {
+const getRegistrationsByCategory = async ({id, headers}) => {
+  console.log("Fetching data for category ID:", id);
+  
   try {
-    const res = await axios.get(`${API_BASE_URL}/api/getCategoryById/${id}`, {
-      headers: {
-        Authorization: `Bearer ${state.userAuthToken}`,
-      },
-    });
-    console.log(res);
+    const res = await axios.get(`${API_BASE_URL}/api/registration/category/${id}`, { headers });
+    console.log("Response:", res);
     return res.data;
   } catch (err) {
-    return err;
+    console.error("Error fetching registration data:", err);
+    return null;
   }
 };
 
