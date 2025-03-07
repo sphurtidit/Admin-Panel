@@ -35,6 +35,8 @@ function AllRegistrations() {
     setRegistration(data);
   };
 
+  console.log(registration);
+
   useEffect(() => {
     fetchRegistration();
   }, []);
@@ -42,23 +44,23 @@ function AllRegistrations() {
   if (!registration) return <div>Loading...</div>;
 
   // Function to Export CSV (Existing)
-  const exportToCSV = () => {
-    if (!registration.length) return alert("No data to export!");
+  const exportToCSV = (data) => {
+    if (!data.length) return alert("No data to export!");
 
     // Format Data for CSV
-    const formattedData = registration.map((elm) => ({
+    const formattedData = data.map((elm) => ({
+      Event_Name: elm.eventId?.name,
+      Category: elm.catId.categoryName,
+      College_Name: elm.userId.college_name,
       Team_Name: elm.teamName,
       Captain_Name: elm.captainName,
       Members: elm.member.length,
       Officials: elm.faculty.length,
-      College_Name: elm.userId.college_name,
-      Event_Name: elm.eventId?.name,
-      Category: elm.catId.categoryName,
       College_Mail: elm.clgMail,
       Payment_Status: elm.payStatus ? "Paid" : "Not Paid",
       Registration_Amount: elm.amount,
-      Phone_Number: elm.phoneNo.toString(),
-      Alternate_Number: elm.alternateNo,
+      Phone_Number: `"${elm.phoneNo}"`,
+      Alternate_Number: `"${elm.alternateNo}"`,
       Accomodation: elm.accomodation ? "Yes" : "No",
       Accomodation_Amount: (elm.member.length + elm.faculty.length) * 1300,
       Accomodation_Payment: elm.payAccommodation ? "Paid" : "Not Paid",
@@ -70,22 +72,29 @@ function AllRegistrations() {
     saveAs(blob, "Registrations.csv");
   };
 
+  // Function to Export Only Paid Teams to CSV
+  const exportPaidRegistrationsToCSV = () => {
+    const paidRegistrations = registration.filter((elm) => elm.payStatus);
+
+    exportToCSV(paidRegistrations); // Use the existing exportToCSV function to export the paid teams
+  };
+
   // Function to Export Team Members CSV
-  // Function to Export Team Members CSV using map
   const exportTeamMembersToCSV = () => {
     const allMembers = registration
       .map((elm) => {
         return elm.member?.map((member) => ({
-          College_Name: elm.userId.college_name,
           Event_Name: elm.eventId?.name,
           Category: elm.catId.categoryName,
+          College_Name: elm.userId.college_name,
           Team_Name: elm.teamName,
           Member_Name: `"${member.memberName}"`,
           College_ID: `"${member.clgId}"`,
           Aadhar_Id: `"${member.govId}"`,
+          Gender: member.gender,
         }));
       })
-      .flat(); // Use flat() to merge the array of arrays into a single array
+      .flat();
 
     if (allMembers.length === 0) return alert("No team members to export!");
 
@@ -102,8 +111,11 @@ function AllRegistrations() {
           <p className="text-2xl font-semibold">
             Total Registrations - {registration.length}
           </p>
-          <Button onClick={exportToCSV} variant="default">
+          <Button onClick={exportToCSV.bind(null, registration)} variant="default">
             Download Registration CSV
+          </Button>
+          <Button onClick={exportPaidRegistrationsToCSV} variant="default">
+            Download Paid Teams CSV
           </Button>
           <Button onClick={exportTeamMembersToCSV} variant="default">
             Download Team Members CSV
@@ -224,6 +236,7 @@ function AllRegistrations() {
                                 <span>Name - {elmt.memberName}</span>
                                 <span>College ID - {elmt.clgId}</span>
                                 <span>Government ID - {elmt.govId}</span>
+                                <span>Gender - {elmt.gender}</span>
                               </div>
                             </div>
                           ))}
