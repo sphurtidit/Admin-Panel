@@ -179,6 +179,19 @@ const getAllPayments = async ({ headers }) => {
   }
 };
 
+const getRegistrationsByCategory = async ({id, headers}) => {
+  console.log("Fetching data for category ID:", id);
+  
+  try {
+    const res = await axios.get(`${API_BASE_URL}/api/registration/category/${id}`, { headers });
+    console.log("Response:", res);
+    return res.data;
+  } catch (err) {
+    console.error("Error fetching registration data:", err);
+    return null;
+  }
+};
+
 export {
   getAllAdmins,
   createAdmin,
@@ -195,4 +208,5 @@ export {
   deleteSchedule,
   getAllRegistrations,
   getAllPayments,
+  getRegistrationsByCategory
 };
