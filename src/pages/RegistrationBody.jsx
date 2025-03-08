@@ -8,8 +8,6 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { DialogHeader } from "@/components/ui/dialog";
-import { getAllRegistrations } from "@/services/api/apiAdmin";
-import useAuth from "@/store/useAuth";
 import {
     Dialog,
     DialogContent,
@@ -24,7 +22,7 @@ import { unparse } from "papaparse";
 
 export default function RegistrationBody({registration}) {
 
-    const exportToCSV = (data) => {
+    const exportToCSV = (data, fileName) => {
         if (!data.length) return alert("No data to export!");
 
         // Format Data for CSV
@@ -42,21 +40,21 @@ export default function RegistrationBody({registration}) {
             Phone_Number: `"${elm.phoneNo}"`,
             Alternate_Number: `"${elm.alternateNo}"`,
             Accomodation: elm.accomodation ? "Yes" : "No",
-            Accomodation_Amount: (elm.member.length + elm.faculty.length) * 1300,
+            Accomodation_Amount: (elm.member.length + elm.faculty.length) * 1000,
             Accomodation_Payment: elm.payAccommodation ? "Paid" : "Not Paid",
         }));
 
         // Convert to CSV and Download
         const csv = unparse(formattedData);
         const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-        saveAs(blob, "Registrations.csv");
+        saveAs(blob, `${fileName}.csv`);
     };
 
     // Function to Export Only Paid Teams to CSV
     const exportPaidRegistrationsToCSV = () => {
         const paidRegistrations = registration.filter((elm) => elm.payStatus);
 
-        exportToCSV(paidRegistrations); // Use the existing exportToCSV function to export the paid teams
+        exportToCSV(paidRegistrations, "Paid Registrations"); // Use the existing exportToCSV function to export the paid teams
     };
 
     // Function to Export Team Members CSV
@@ -91,7 +89,7 @@ export default function RegistrationBody({registration}) {
                     <p className="text-2xl font-semibold">
                         Total Registrations - {registration.length}
                     </p>
-                    <Button onClick={exportToCSV.bind(null, registration)} variant="default">
+                    <Button onClick={() => exportToCSV(registration, "Registrations")} variant="default">
                         Download Registration CSV
                     </Button>
                     <Button onClick={exportPaidRegistrationsToCSV} variant="default">
@@ -107,7 +105,7 @@ export default function RegistrationBody({registration}) {
                             <CardHeader>
                                 <CardTitle>{elm?.teamName}</CardTitle>
                                 <CardDescription>
-                                    {elm.eventId?.name} - {elm.catName}
+                                    {elm.eventId?.name} - {elm.catId?.categoryName}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
