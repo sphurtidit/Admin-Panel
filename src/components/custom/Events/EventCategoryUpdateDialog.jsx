@@ -11,8 +11,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { updateCategory } from '@/services/api/apiAdmin';
+import useAuth from '@/store/useAuth';
 
-function EventCategoryUpdateDialog({ data }) {
+function EventCategoryUpdateDialog({ data, fetchEvent }) {
+  const { userAuthToken } = useAuth();
+  console.log(data);
   const [isOpen, setIsOpen] = useState(false);
   const [categoryData, setCategoryData] = useState({
     registrationFees: data.registrationFees,
@@ -20,7 +24,7 @@ function EventCategoryUpdateDialog({ data }) {
     maxNumber: data.maxNumber,
     prizeWinner: data.prizeWinner,
     prizeRunnerUp: data.prizeRunnerUp,
-    isPrizeVisible: data.isPrizeVisible ? 'True' : 'False',
+    isPrizeVisible: data.isPrizeVisible ? true : false,
   });
 
   const handelCategoryData = (e) => {
@@ -30,10 +34,19 @@ function EventCategoryUpdateDialog({ data }) {
     }));
   };
 
-  console.log(data._id);
-
-  const handelFormSubmit = (e) => {
+  const handelFormSubmit = async (e) => {
     e.preventDefault();
+    const res = await updateCategory({
+      headers: {
+        Authorization: `Bearer ${userAuthToken}`,
+      },
+      data: {
+        id: data._id,
+        ...categoryData,
+      },
+    });
+    setIsOpen(false);
+    fetchEvent();
   };
 
   return (
