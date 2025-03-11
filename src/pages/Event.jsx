@@ -161,7 +161,10 @@ function Event() {
                       >
                         Delete Category
                       </Button>
-                      <EventCategoryUpdateDialog data={elm} />
+                      <EventCategoryUpdateDialog
+                        data={elm}
+                        fetchEvent={fetchEvent}
+                      />
                     </div>
                   </CardFooter>
                 </Card>

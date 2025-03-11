@@ -103,7 +103,7 @@ export default function RegistrationBody({registration}) {
                     {registration?.map((elm) => (
                         <Card key={elm._id}>
                             <CardHeader>
-                                <CardTitle>{elm?.teamName}</CardTitle>
+                                <CardTitle>{elm.userId.college_name}</CardTitle>
                                 <CardDescription>
                                     {elm.eventId?.name} - {elm.catId?.categoryName}
                                 </CardDescription>
