@@ -20,8 +20,11 @@ import React, { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { saveAs } from 'file-saver';
 import { unparse } from 'papaparse';
+import { deleteRegistration } from '@/services/api/apiAdmin';
+import useAuth from '@/store/useAuth';
 
-export default function RegistrationBody({ registration }) {
+export default function RegistrationBody({ registration, fetchRegistration }) {
+  const { userAuthToken } = useAuth();
   const exportToCSV = (data, fileName) => {
     if (!data.length) return alert('No data to export!');
 
@@ -80,6 +83,16 @@ export default function RegistrationBody({ registration }) {
     const csv = unparse(allMembers);
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     saveAs(blob, 'Team_Members.csv');
+  };
+
+  const handelDeleteRegistration = async (id) => {
+    const res = await deleteRegistration({
+      id,
+      headers: {
+        Authorization: `Bearer ${userAuthToken}`,
+      },
+    });
+    fetchRegistration();
   };
 
   return (
@@ -278,7 +291,12 @@ export default function RegistrationBody({ registration }) {
                       <DialogDescription>
                         <div className="mt-4 flex justify-around">
                           <DialogClose>
-                            <Button variant="outline">Yes</Button>
+                            <Button
+                              variant="outline"
+                              onClick={() => handelDeleteRegistration(elm._id)}
+                            >
+                              Yes
+                            </Button>
                           </DialogClose>
                           <DialogClose>
                             <Button variant="outline">No</Button>

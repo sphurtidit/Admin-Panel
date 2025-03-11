@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import RegistrationBody from "./RegistrationBody";
-import { getAllRegistrations } from "@/services/api/apiAdmin";
-import useAuth from "@/store/useAuth";
+import React, { useEffect, useState } from 'react';
+import RegistrationBody from './RegistrationBody';
+import { getAllRegistrations } from '@/services/api/apiAdmin';
+import useAuth from '@/store/useAuth';
 
 function AllRegistrations() {
   const userAuthToken = useAuth();
@@ -24,8 +24,12 @@ function AllRegistrations() {
 
   if (!registration) return <div>Loading...</div>;
 
-  return <RegistrationBody registration={registration} />;
-  
+  return (
+    <RegistrationBody
+      registration={registration}
+      fetchRegistration={fetchRegistration}
+    />
+  );
 }
 
 export default AllRegistrations;
