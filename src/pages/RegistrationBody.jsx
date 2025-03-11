@@ -39,9 +39,9 @@ export default function RegistrationBody({registration}) {
             Registration_Amount: elm.amount,
             Phone_Number: `"${elm.phoneNo}"`,
             Alternate_Number: `"${elm.alternateNo}"`,
-            Accomodation: elm.accomodation ? "Yes" : "No",
-            Accomodation_Amount: (elm.member.length + elm.faculty.length) * 1000,
-            Accomodation_Payment: elm.payAccommodation ? "Paid" : "Not Paid",
+            Accommodation: elm.accommodation ? "Yes" : "No",
+            Accommodation_Amount: (elm.member.length + elm.faculty.length) * 1000,
+            Accommodation_Payment: elm.payAccommodation ? "Paid" : "Not Paid",
         }));
 
         // Convert to CSV and Download
@@ -164,10 +164,10 @@ export default function RegistrationBody({registration}) {
                                         </TableRow>
                                         <TableRow>
                                             <TableCell className="font-medium">
-                                                Accomodation
+                                                Accommodation
                                             </TableCell>
                                             <TableCell className="text-right">
-                                                {elm.accomodation ? (
+                                                {elm.accommodation ? (
                                                     <span className="text-green-300">True</span>
                                                 ) : (
                                                     <span className="text-red-300">False</span>
@@ -182,7 +182,7 @@ export default function RegistrationBody({registration}) {
                                         </TableRow>
                                         <TableRow>
                                             <TableCell className="font-medium">
-                                                Accomodation Payment
+                                                Accommodation Payment
                                             </TableCell>
                                             <TableCell className="text-right">
                                                 {elm.payAccommodation ? (
