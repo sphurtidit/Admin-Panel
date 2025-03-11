@@ -195,6 +195,20 @@ const getRegistrationsByCategory = async ({ id, headers }) => {
   }
 };
 
+const deleteRegistration = async ({ headers, id }) => {
+  try {
+    const res = await axios.delete(
+      `${API_BASE_URL}/api/registration/admin/${id}`,
+      {
+        headers: headers,
+      }
+    );
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
 export {
   getAllAdmins,
   createAdmin,
@@ -213,4 +227,5 @@ export {
   getAllPayments,
   getRegistrationsByCategory,
   updateCategory,
+  deleteRegistration,
 };
