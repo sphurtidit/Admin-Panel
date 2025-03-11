@@ -145,6 +145,18 @@ function Event() {
                             )}
                           </TableCell>
                         </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            Registration Open
+                          </TableCell>
+                          <TableCell className="text-right">
+                            {elm.registrationOpen ? (
+                              <span className="text-green-300">True</span>
+                            ) : (
+                              <span className="text-red-300">False</span>
+                            )}
+                          </TableCell>
+                        </TableRow>
                       </TableBody>
                     </Table>
                   </CardContent>
