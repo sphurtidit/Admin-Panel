@@ -195,6 +195,8 @@ const getRegistrationsByCategory = async ({ id, headers }) => {
   }
 };
 
+const deleteRegistration = async ({ headers }) => {};
+
 export {
   getAllAdmins,
   createAdmin,
