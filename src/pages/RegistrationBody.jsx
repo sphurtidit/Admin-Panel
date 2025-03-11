@@ -24,6 +24,8 @@ import { deleteRegistration } from '@/services/api/apiAdmin';
 import useAuth from '@/store/useAuth';
 
 export default function RegistrationBody({ registration, fetchRegistration }) {
+  const [paymentStatus, setPaymentStatus] = useState(false);
+  const [accommodation, setAccommodation] = useState(false);
   const { userAuthToken } = useAuth();
   const exportToCSV = (data, fileName) => {
     if (!data.length) return alert('No data to export!');
@@ -43,8 +45,10 @@ export default function RegistrationBody({ registration, fetchRegistration }) {
       Phone_Number: `"${elm.phoneNo}"`,
       Alternate_Number: `"${elm.alternateNo}"`,
       Accommodation: elm.accommodation ? 'Yes' : 'No',
-      Accommodation_Amount: (elm.member.length + elm.faculty.length) * 1000,
-      Accommodation_Payment: elm.payAccommodation ? 'Paid' : 'Not Paid',
+      ...(elm.accommodation && {
+        Accommodation_Amount: elm.member.length + elm.faculty.length * 1000,
+        Accommodation_Payment: elm.Accommodation ? 'Paid' : 'Not Paid',
+      }),
     }));
 
     // Convert to CSV and Download
@@ -115,200 +119,227 @@ export default function RegistrationBody({ registration, fetchRegistration }) {
             Download Team Members CSV
           </Button>
         </div>
+        <div className="my-4 flex gap-4">
+          <Button
+            variant={paymentStatus ? 'default' : 'outline'}
+            onClick={() => setPaymentStatus((prev) => !prev)}
+          >
+            Payment Status
+          </Button>
+          <Button
+            variant={accommodation ? 'default' : 'outline'}
+            onClick={() => setAccommodation((prev) => !prev)}
+          >
+            Accommodation
+          </Button>
+        </div>
         <div className="grid grid-cols-3 gap-4">
-          {registration?.map((elm) => (
-            <Card key={elm._id}>
-              <CardHeader>
-                <CardTitle>{elm.userId.college_name}</CardTitle>
-                <CardDescription>
-                  {elm.eventId?.name} - {elm.catId?.categoryName}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {/* Table Start */}
-                <Table>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className="font-medium">
-                        College Mail
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {elm.clgMail}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">
-                        Payment Status
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {elm.payStatus ? (
-                          <span className="text-green-300">True</span>
-                        ) : (
-                          <span className="text-red-300">False</span>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">
-                        Registration Amount
-                      </TableCell>
-                      <TableCell className="text-right">{elm.amount}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">
-                        Phone Number
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {elm.phoneNo}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">
-                        Alternate Number
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {elm.alternateNo}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">Name VC</TableCell>
-                      <TableCell className="text-right">{elm.nameVC}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">Name SO</TableCell>
-                      <TableCell className="text-right">{elm.nameSO}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell className="font-medium">
-                        Accommodation
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {elm.accommodation ? (
-                          <span className="text-green-300">True</span>
-                        ) : (
-                          <span className="text-red-300">False</span>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                    {elm.accommodation ? (
+          {registration
+            ?.filter((pay) => !paymentStatus || pay.payStatus === true)
+            .filter((acc) => !accommodation || acc.accommodation === true)
+            .map((elm) => (
+              <Card key={elm._id}>
+                <CardHeader>
+                  <CardTitle>{elm.userId.college_name}</CardTitle>
+                  <CardDescription>
+                    {elm.eventId?.name} - {elm.catId?.categoryName}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {/* Table Start */}
+                  <Table>
+                    <TableBody>
                       <TableRow>
                         <TableCell className="font-medium">
-                          Acc Amount
+                          College Mail
                         </TableCell>
                         <TableCell className="text-right">
-                          {(elm.member.length + elm.faculty.length) * 1000}
+                          {elm.clgMail}
                         </TableCell>
                       </TableRow>
-                    ) : (
-                      <></>
-                    )}
-                    {elm.accommodation ? (
                       <TableRow>
                         <TableCell className="font-medium">
-                          Accommodation Payment
+                          Payment Status
                         </TableCell>
                         <TableCell className="text-right">
-                          {elm.payAccommodation ? (
+                          {elm.payStatus ? (
                             <span className="text-green-300">True</span>
                           ) : (
                             <span className="text-red-300">False</span>
                           )}
                         </TableCell>
                       </TableRow>
-                    ) : (
-                      <></>
-                    )}
-                  </TableBody>
-                </Table>
-                {/* Table End */}
-              </CardContent>
-              <CardFooter>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="default" className="mr-4">
-                      Members
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[550px]">
-                    <DialogHeader>
-                      <DialogTitle>Member List of {elm?.teamName}</DialogTitle>
-                      <DialogDescription>
-                        <div className="mt-3 grid grid-cols-2">
-                          {elm.member?.map((elmt, inx) => (
-                            <div key={inx * 10}>
-                              <div className="m-4 flex gap-1 flex-col">
-                                <span>Name - {elmt.memberName}</span>
-                                <span>College ID - {elmt.clgId}</span>
-                                <span>Government ID - {elmt.govId}</span>
-                                <span>Gender - {elmt.gender}</span>
+                      <TableRow>
+                        <TableCell className="font-medium">
+                          Registration Amount
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {elm.amount}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="font-medium">
+                          Phone Number
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {elm.phoneNo}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="font-medium">
+                          Alternate Number
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {elm.alternateNo}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="font-medium">Name VC</TableCell>
+                        <TableCell className="text-right">
+                          {elm.nameVC}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="font-medium">Name SO</TableCell>
+                        <TableCell className="text-right">
+                          {elm.nameSO}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="font-medium">
+                          Accommodation
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {elm.accommodation ? (
+                            <span className="text-green-300">True</span>
+                          ) : (
+                            <span className="text-red-300">False</span>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                      {elm.accommodation ? (
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            Acc Amount
+                          </TableCell>
+                          <TableCell className="text-right">
+                            {(elm.member.length + elm.faculty.length) * 1000}
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        <></>
+                      )}
+                      {elm.accommodation ? (
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            Accommodation Payment
+                          </TableCell>
+                          <TableCell className="text-right">
+                            {elm.payAccommodation ? (
+                              <span className="text-green-300">True</span>
+                            ) : (
+                              <span className="text-red-300">False</span>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        <></>
+                      )}
+                    </TableBody>
+                  </Table>
+                  {/* Table End */}
+                </CardContent>
+                <CardFooter>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="default" className="mr-4">
+                        Members
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[550px]">
+                      <DialogHeader>
+                        <DialogTitle>
+                          Member List of {elm?.teamName}
+                        </DialogTitle>
+                        <DialogDescription>
+                          <div className="mt-3 grid grid-cols-2">
+                            {elm.member?.map((elmt, inx) => (
+                              <div key={inx * 10}>
+                                <div className="m-4 flex gap-1 flex-col">
+                                  <span>Name - {elmt.memberName}</span>
+                                  <span>College ID - {elmt.clgId}</span>
+                                  <span>Government ID - {elmt.govId}</span>
+                                  <span>Gender - {elmt.gender}</span>
+                                </div>
                               </div>
-                            </div>
-                          ))}
-                        </div>
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="default" className="mr-4">
-                      Officials
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[550px]">
-                    <DialogHeader>
-                      <DialogTitle>
-                        Officials List of {elm?.teamName}
-                      </DialogTitle>
-                      <DialogDescription>
-                        <div className="mt-3 grid grid-cols-2">
-                          {elm.faculty?.map((elmt, indx) => (
-                            <div key={indx * 10}>
-                              <div className="m-4 flex gap-1 flex-col">
-                                <span>Name - {elmt?.facultyName}</span>
-                                <span>
-                                  Government ID - {elmt?.facultyAadhar}
-                                </span>
+                            ))}
+                          </div>
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="default" className="mr-4">
+                        Officials
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[550px]">
+                      <DialogHeader>
+                        <DialogTitle>
+                          Officials List of {elm?.teamName}
+                        </DialogTitle>
+                        <DialogDescription>
+                          <div className="mt-3 grid grid-cols-2">
+                            {elm.faculty?.map((elmt, indx) => (
+                              <div key={indx * 10}>
+                                <div className="m-4 flex gap-1 flex-col">
+                                  <span>Name - {elmt?.facultyName}</span>
+                                  <span>
+                                    Government ID - {elmt?.facultyAadhar}
+                                  </span>
+                                </div>
                               </div>
-                            </div>
-                          ))}
-                        </div>
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="default" className="mr-4">
-                      Delete
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[350px]">
-                    <DialogHeader>
-                      <DialogTitle>
-                        Are you sure you want to delete this Registration
-                      </DialogTitle>
-                      <DialogDescription>
-                        <div className="mt-4 flex justify-around">
-                          <DialogClose>
-                            <Button
-                              variant="outline"
-                              onClick={() => handelDeleteRegistration(elm._id)}
-                            >
-                              Yes
-                            </Button>
-                          </DialogClose>
-                          <DialogClose>
-                            <Button variant="outline">No</Button>
-                          </DialogClose>
-                        </div>
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </CardFooter>
-            </Card>
-          ))}
+                            ))}
+                          </div>
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="default" className="mr-4">
+                        Delete
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[350px]">
+                      <DialogHeader>
+                        <DialogTitle>
+                          Are you sure you want to delete this Registration
+                        </DialogTitle>
+                        <DialogDescription>
+                          <div className="mt-4 flex justify-around">
+                            <DialogClose>
+                              <Button
+                                variant="outline"
+                                onClick={() =>
+                                  handelDeleteRegistration(elm._id)
+                                }
+                              >
+                                Yes
+                              </Button>
+                            </DialogClose>
+                            <DialogClose>
+                              <Button variant="outline">No</Button>
+                            </DialogClose>
+                          </div>
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                </CardFooter>
+              </Card>
+            ))}
         </div>
       </div>
     </>
