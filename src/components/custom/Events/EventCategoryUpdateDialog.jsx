@@ -25,6 +25,7 @@ function EventCategoryUpdateDialog({ data, fetchEvent }) {
     prizeWinner: data.prizeWinner,
     prizeRunnerUp: data.prizeRunnerUp,
     isPrizeVisible: data.isPrizeVisible ? true : false,
+    registrationOpen: data.registrationOpen ? true : false,
   });
 
   const handelCategoryData = (e) => {
@@ -132,6 +133,17 @@ function EventCategoryUpdateDialog({ data, fetchEvent }) {
                 className="col-span-3"
                 onChange={(e) => handelCategoryData(e)}
                 value={categoryData.isPrizeVisible}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="registrationOpen" className="text-right">
+                Registration Open
+              </Label>
+              <Input
+                id="registrationOpen"
+                className="col-span-3"
+                onChange={(e) => handelCategoryData(e)}
+                value={categoryData.registrationOpen}
               />
             </div>
           </div>
