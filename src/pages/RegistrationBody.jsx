@@ -26,7 +26,7 @@ import useAuth from '@/store/useAuth';
 export default function RegistrationBody({ registration, fetchRegistration }) {
   const [paymentStatus, setPaymentStatus] = useState(false);
   const [accommodation, setAccommodation] = useState(false);
-  const { userAuthToken } = useAuth();
+  const { userAuthToken, user } = useAuth();
   const exportToCSV = (data, fileName) => {
     if (!data.length) return alert('No data to export!');
 
@@ -104,7 +104,13 @@ export default function RegistrationBody({ registration, fetchRegistration }) {
       <div className="p-8">
         <div className="flex justify-between items-center mb-4">
           <p className="text-2xl font-semibold">
-            Total Registrations - {registration.length}
+            Total Registrations -{' '}
+            {
+              registration
+                .filter((pay) => !paymentStatus || pay.payStatus === true)
+                .filter((acc) => !accommodation || acc.accommodation === true)
+                .length
+            }
           </p>
           <Button
             onClick={() => exportToCSV(registration, 'Registrations')}
@@ -306,37 +312,41 @@ export default function RegistrationBody({ registration, fetchRegistration }) {
                       </DialogHeader>
                     </DialogContent>
                   </Dialog>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="default" className="mr-4">
-                        Delete
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[350px]">
-                      <DialogHeader>
-                        <DialogTitle>
-                          Are you sure you want to delete this Registration
-                        </DialogTitle>
-                        <DialogDescription>
-                          <div className="mt-4 flex justify-around">
-                            <DialogClose>
-                              <Button
-                                variant="outline"
-                                onClick={() =>
-                                  handelDeleteRegistration(elm._id)
-                                }
-                              >
-                                Yes
-                              </Button>
-                            </DialogClose>
-                            <DialogClose>
-                              <Button variant="outline">No</Button>
-                            </DialogClose>
-                          </div>
-                        </DialogDescription>
-                      </DialogHeader>
-                    </DialogContent>
-                  </Dialog>
+                  {user.role === 'master_admin' ? (
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="default" className="mr-4">
+                          Delete
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[350px]">
+                        <DialogHeader>
+                          <DialogTitle>
+                            Are you sure you want to delete this Registration
+                          </DialogTitle>
+                          <DialogDescription>
+                            <div className="mt-4 flex justify-around">
+                              <DialogClose>
+                                <Button
+                                  variant="outline"
+                                  onClick={() =>
+                                    handelDeleteRegistration(elm._id)
+                                  }
+                                >
+                                  Yes
+                                </Button>
+                              </DialogClose>
+                              <DialogClose>
+                                <Button variant="outline">No</Button>
+                              </DialogClose>
+                            </div>
+                          </DialogDescription>
+                        </DialogHeader>
+                      </DialogContent>
+                    </Dialog>
+                  ) : (
+                    <></>
+                  )}
                 </CardFooter>
               </Card>
             ))}
