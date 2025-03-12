@@ -31,42 +31,8 @@ import {
 import { Link } from 'react-router-dom';
 import useAuth from '@/store/useAuth';
 
-// Menu items.
-// const items = [
-//   {
-//     title: 'Home',
-//     url: '#',
-//     icon: Home,
-//   },
-//   {
-//     title: 'Events',
-//     url: '#',
-//     icon: Calendar,
-//   },
-//   {
-//     title: 'Users',
-//     url: '#',
-//     icon: User,
-//   },
-//   {
-//     title: 'Registration',
-//     url: '#',
-//     icon: ListCheck,
-//   },
-//   {
-//     title: 'Schedule',
-//     url: '#',
-//     icon: Clock,
-//   },
-//   {
-//     title: 'Payment',
-//     url: '#',
-//     icon: IndianRupee,
-//   },
-// ];
-
 export function AppSidebar() {
-  const { setLogout } = useAuth();
+  const { setLogout, user } = useAuth();
   return (
     <Sidebar>
       <SidebarContent>
@@ -75,9 +41,9 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <HomeMenu />
-              <UserMenu />
-              <EventsMenu />
-              <PaymentMenu />
+              <UserMenu role={user.role} />
+              <EventsMenu role={user.role} />
+              <PaymentMenu role={user.role} />
               <RegistrationMenu />
             </SidebarMenu>
           </SidebarGroupContent>
@@ -119,8 +85,10 @@ function HomeMenu() {
   );
 }
 
-function UserMenu() {
-  return (
+function UserMenu({ role }) {
+  return role !== 'master_admin' ? (
+    <></>
+  ) : (
     <SidebarMenuItem>
       <SidebarMenuButton asChild>
         <Link to="/users" className="cursor-pointer">
@@ -132,8 +100,10 @@ function UserMenu() {
   );
 }
 
-function EventsMenu() {
-  return (
+function EventsMenu({ role }) {
+  return role !== 'master_admin' ? (
+    <></>
+  ) : (
     <Collapsible defaultOpen className="group/collapsible">
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
@@ -172,8 +142,10 @@ function EventsMenu() {
   );
 }
 
-function PaymentMenu() {
-  return (
+function PaymentMenu({ role }) {
+  return role !== 'master_admin' ? (
+    <></>
+  ) : (
     <Collapsible className="group/collapsible">
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>

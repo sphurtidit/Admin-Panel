@@ -23,7 +23,7 @@ function AutoLogin() {
             },
           });
 
-          setAutoLogin(data);
+          setAutoLogin({ data });
 
           if (location.pathname !== '/login') {
             navigate(location.pathname); // Navigate to current pathname if not login page

@@ -36,7 +36,10 @@ const useAuthStore = create(
   devtools(
     persist(authStore, {
       name: 'userAuthinfo',
-      partialize: (state) => ({ userAuthToken: state.userAuthToken }),
+      partialize: (state) => ({
+        userAuthToken: state.userAuthToken,
+        role: state.user.role,
+      }),
     })
   )
 );
