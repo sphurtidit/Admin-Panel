@@ -39,6 +39,7 @@ const PaymentsTable = ({ data }) => {
         "Amount": detail.amount,
         "Type": detail.type,
         "Registration ID": detail.regId,
+        "Timestamp": `${new Date(row.timestamp.toLocaleString()).toLocaleString()}`,
       }))
     );
 
@@ -70,6 +71,7 @@ const PaymentsTable = ({ data }) => {
             <th className="py-3 px-4 text-left text-sm font-semibold">College Name</th>
             <th className="py-3 px-4 text-left text-sm font-semibold">User ID</th>
             <th className="py-3 px-4 text-left text-sm font-semibold">Amount</th>
+            <th className="py-3 px-4 text-left text-sm font-semibold">Time</th>
             <th className="py-3 px-4 text-left text-sm font-semibold">Details</th>
           </tr>
         </thead>
@@ -86,6 +88,7 @@ const PaymentsTable = ({ data }) => {
               <td className="py-3 px-4 text-sm">{row.userId.college_name}</td>
               <td className="py-3 px-4 text-sm">{row.userId.email}</td>
               <td className="py-3 px-4 text-sm">{row.amount}</td>
+              <td className="py-3 px-4 text-sm">{new Date(row.timestamp.toLocaleString()).toLocaleString()}</td>
               <td className="py-3 px-4 text-sm">
                 <button
                   onClick={() => handleDetailsClick(row)}
