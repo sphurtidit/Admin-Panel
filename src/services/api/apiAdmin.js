@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { data } from 'react-router-dom';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const getAllAdmins = async ({ headers }) => {
@@ -129,6 +130,17 @@ const createSchedule = async ({ data, headers }) => {
 const getSchedule = async (id) => {
   try {
     const res = await axios.get(`${API_BASE_URL}/api/matches/${id}`);
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
+const updateSchedule = async ({ id, headers, data }) => {
+  try {
+    const res = await axios.put(`${API_BASE_URL}/api/matches/${id}`, data, {
+      headers: headers,
+    });
     return res.data;
   } catch (err) {
     return err;
