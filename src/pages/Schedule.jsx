@@ -19,6 +19,7 @@ import {
   TableCell,
   TableRow,
 } from '@/components/ui/table';
+import ScheduleUpdateDialog from '@/components/custom/Events/ScheduleUpdateDialog';
 
 const invoices = [
   {
@@ -41,7 +42,6 @@ function Schedule() {
   const fetchSchedule = async () => {
     const data = await getSchedule(eventCategoryId);
     setSchedules(data.data);
-    console.log(data.data);
 
     setLoading(false);
   };
@@ -134,13 +134,17 @@ function Schedule() {
                   </Table>
                   {/* Table End */}
                 </CardContent>
-                <CardFooter>
+                <CardFooter className="flex justify-between">
                   <Button
                     onClick={() => handelDeleteSchedule(elm._id)}
                     disabled={disabled}
                   >
                     Delete Schedule
                   </Button>
+                  <ScheduleUpdateDialog
+                    data={elm}
+                    fetchSchedule={fetchSchedule}
+                  />
                 </CardFooter>
               </Card>
             );
