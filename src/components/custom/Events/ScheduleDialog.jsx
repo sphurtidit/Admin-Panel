@@ -24,10 +24,11 @@ function ScheduleDialog({ fetchSchedule }) {
     teamA: '',
     teamB: '',
     startTime: '',
-    isMatchComplete: '',
+    isMatchComplete: false,
     score: '',
     winner: '',
     matchName: '',
+    venue: '',
   });
 
   const handelTextData = (event) => {
@@ -45,7 +46,7 @@ function ScheduleDialog({ fetchSchedule }) {
       ...formTextData,
       eventCategoryId,
     };
-
+    console.log(finalData);
     const data = await createSchedule({
       data: finalData,
       headers: {
@@ -68,10 +69,7 @@ function ScheduleDialog({ fetchSchedule }) {
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handelFormSubmit}>
           <DialogHeader>
-            <DialogTitle>Edit profile</DialogTitle>
-            <DialogDescription>
-              Make changes to your profile here. Click save when you're done.
-            </DialogDescription>
+            <DialogTitle>Add a new Schedule</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
@@ -142,6 +140,17 @@ function ScheduleDialog({ fetchSchedule }) {
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="score" className="text-right">
+                Venue
+              </Label>
+              <Input
+                id="venue"
+                className="col-span-3"
+                value={formTextData.venue}
+                onChange={handelTextData}
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="winner" className="text-right">
                 Winner
               </Label>
@@ -158,7 +167,6 @@ function ScheduleDialog({ fetchSchedule }) {
               </Label>
               <Input
                 id="matchName"
-                placeholder="Finals"
                 className="col-span-3"
                 value={formTextData.matchName}
                 onChange={handelTextData}

@@ -146,6 +146,17 @@ const deleteSchedule = async ({ id, headers }) => {
   }
 };
 
+const updateSchedule = async ({ id, data, headers }) => {
+  try {
+    const res = await axios.put(`${API_BASE_URL}/api/matches/${id}`, data, {
+      headers: headers,
+    });
+    return res.data;
+  } catch (err) {
+    return err;
+  }
+};
+
 const getAllRegistrations = async ({ headers }) => {
   try {
     const res = await axios.get(`${API_BASE_URL}/api/registration`, {
@@ -228,4 +239,5 @@ export {
   getRegistrationsByCategory,
   updateCategory,
   deleteRegistration,
+  updateSchedule,
 };
